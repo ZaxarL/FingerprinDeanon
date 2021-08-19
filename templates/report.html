@@ -7,9 +7,9 @@
 </head>
 <body>
 <div class="container" >
+    <center><h1>{% if flag_new_user %}<p style="color: green">New user</p>{% else %}<p style="color: red">Old user</p>{% endif %}</h1></center>
 <table class="table">
   <tbody>
-  <tr><th margin="auto" scope="row" colspan="2">{% if flag_new_user %}New user{% else %}Old user{% endif %}</th></tr>
     <tr>
       <th scope="row">IP Address</th>
       <td>{{ ip }}</td>
