@@ -61,28 +61,47 @@ def get_client_ip(request):
 
 def check_user(fp, hash_fp, hash_canvas_fp, user_ip):
     try:
-        UserInfo.objects.get(visitorId=fp['visitorId'])
+        user_info = UserInfo.objects.get(visitorId=fp['visitorId'])
     except UserInfo.DoesNotExist:
         try:
-            UserInfo.objects.get(hash_fingerprint=hash_fp)
+            user_info = UserInfo.objects.get(hash_fingerprint=hash_fp)
         except UserInfo.DoesNotExist:
             try:
-                UserInfo.objects.get(hash_canvas_fingerprint=hash_canvas_fp)
+                user_info = UserInfo.objects.get(hash_canvas_fingerprint=hash_canvas_fp)
             except UserInfo.DoesNotExist:
                 try:
-                    UserInfo.objects.get(user_ip=user_ip)
+                    user_info = UserInfo.objects.get(user_ip=user_ip)
                 except UserInfo.DoesNotExist:
                     return True
                 else:
+                    if user_info.hash_canvas_fingerprint != hash_canvas_fp or user_info.visitorId != fp['visitorId'] or user_info.hash_fingerprint != hash_fp:
+                        user = UserInfo(visitorId=fp['visitorId'], hash_fingerprint=hash_fp,
+                                        hash_canvas_fingerprint=hash_canvas_fp,
+                                        user_ip=user_ip)
+                        user.save()
                     print("user_ip: {}".format(user_ip))
                     return False
             else:
+                if user_info.user_ip != user_ip or user_info.visitorId != fp['visitorId'] or user_info.hash_fingerprint != hash_fp:
+                    user = UserInfo(visitorId=fp['visitorId'], hash_fingerprint=hash_fp,
+                                    hash_canvas_fingerprint=hash_canvas_fp,
+                                    user_ip=user_ip)
+                    user.save()
                 print("hash_canvas_fingerprint: {}".format(hash_canvas_fp))
                 return False
         else:
-            print("visitorId: {}".format(fp['visitorId']))
+            if user_info.user_ip != user_ip or user_info.visitorId != fp['visitorId'] or user_info.hash_canvas_fingerprint != hash_canvas_fp:
+                user = UserInfo(visitorId=fp['visitorId'], hash_fingerprint=hash_fp,
+                                hash_canvas_fingerprint=hash_canvas_fp,
+                                user_ip=user_ip)
+                user.save()
+            print("hash_fingerprint: {}".format(fp['hash_fingerprint']))
             return False
     else:
+        if user_info.user_ip != user_ip or user_info.hash_fingerprint != hash_fp or user_info.hash_canvas_fingerprint != hash_canvas_fp:
+            user = UserInfo(visitorId=fp['visitorId'], hash_fingerprint=hash_fp, hash_canvas_fingerprint=hash_canvas_fp,
+                            user_ip=user_ip)
+            user.save()
         print("visitorId: {}".format(fp['visitorId']))
         return False
 
