@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <title>Report</title>
+</head>
+<body>
+<div width="auto" margin="auto" >
+<table class="table aligned" style="display: inline-block;" margin="auto">
+  <tbody>
+  <tr><th margin="auto" scope="row" colspan="2">{% if flag_new_user %}New user{% else %}Old user{% endif %}</th></tr>
+    <tr>
+      <th scope="row">IP Address</th>
+      <td>{{ ip }}</td>
+    </tr>
+    <tr>
+        <th scope="row">Hash fingerprint</th>
+        <td>{{ hash_fingerprint }}</td>
+    </tr>
+    <tr>
+      <th scope="row">Hash Canvas fingerprint</th>
+      <td>{{ hash_canvas_fingerprint }}</td>
+    </tr>
+    <tr>
+        <th scope="row">Using TOR</th>
+        <td>{% if flag_tor %}Yes{% else %}No{% endif %}</td>
+    </tr>
+  <tr>
+        <th scope="row">Using VPN</th>
+        <td>{% if flag_vpn %}Yes{% else %}No{% endif %}</td>
+    </tr>
+  <tr>
+        <th scope="row">Using proxy</th>
+        <td>{% if flag_proxy %}Yes{% else %}No{% endif %}</td>
+    </tr>
+  <tr>
+        <th scope="row">Proxy headers</th>
+        <td>{% if flag_proxy %}{{ proxy_headers }}{% else %}No headers{% endif %}</td>
+    </tr>
+  <tr>
+        <th scope="row">OS</th>
+        <td>{{ fingerprint.components.platform.value}}</td>
+    </tr>
+  <tr>
+        <th scope="row">Browser</th>
+      <td>{% for item in fingerprint.components.vendorFlavors.value%}{{ item }}<br/>{% endfor %}</td>
+    </tr>
+  <tr>
+        <th scope="row">Fonts</th>
+        <td>{% for item in fingerprint.components.fonts.value %}{{ item }}<br/>{% endfor %}</td>
+    </tr>
+  <tr>
+        <th scope="row">Plugins</th>
+        <td>{% for item in fingerprint.components.plugins.value %}{{ item.name }}<br/>{% endfor %}</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+</body>
+</html>
